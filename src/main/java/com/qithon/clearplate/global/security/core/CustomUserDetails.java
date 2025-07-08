@@ -31,8 +31,13 @@ public class CustomUserDetails implements UserDetails {
     return ""; //소셜 로그인 사용중이므로 비밀번호는 빈 문자열로 설정합니다
   }
 
+  /**
+   * 사용자 닉네임을 반환하는 메서드입니다.
+   *
+   * @return 사용자 닉네임을 반환합니다.
+   */
   @Override
   public String getUsername() {
-    return user.getNickname(); //사용자 식별자로 소셜 이메일을 사용합니다
+    return user.getNickname();
   }
 }

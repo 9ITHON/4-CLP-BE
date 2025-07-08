@@ -38,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
    */
   public UserDetails loadUserById(Long id) throws UsernameNotFoundException {
     User user = userRepository.findById(id).orElseThrow(
-        () -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + SocialEmail));
+        () -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + id));
     return new CustomUserDetails(user);
   }
 }

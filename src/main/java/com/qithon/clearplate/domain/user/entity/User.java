@@ -23,6 +23,9 @@ public class User {
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true, nullable = false)
+  private String socialEmail;
+
   @Column(length = 10, nullable = false)
   private String nickname;
 
@@ -36,7 +39,7 @@ public class User {
   private Role role;
 
   @Builder
-  private User(String nickname, Integer cpPoint, Role role) {
+  private User(String socialEmail, String nickname, Integer cpPoint, Role role) {
     this.nickname = nickname;
     this.cpPoint = cpPoint;
     this.role = role;
@@ -50,8 +53,9 @@ public class User {
    * @return 생성된 User 객체
    */
   //TODO: 쿠폰 연관관계 매핑 후 메서드 인자로 쿠폰 객체를 추가해야함.
-  public static User createStandardUserOf(String nickname, Integer cpPoint) {
+  public static User createStandardUserOf(String socialEmail, String nickname, Integer cpPoint) {
     return User.builder()
+        .socialEmail(socialEmail)
         .nickname(nickname)
         .cpPoint(cpPoint)
         .role(Role.ROLE_USER)
@@ -67,8 +71,9 @@ public class User {
    * @return 생성된 User 객체
    */
   //TODO: 쿠폰 연관관계 매핑 후 메서드 인자로 쿠폰 객체를 추가해야함.
-  public static User createOwnerUserOf(String nickname, Integer cpPoint) {
+  public static User createOwnerUserOf(String socialEmail, String nickname, Integer cpPoint) {
     return User.builder()
+        .socialEmail(socialEmail)
         .nickname(nickname)
         .cpPoint(cpPoint)
         .role(Role.ROLE_OWNER)
@@ -84,8 +89,9 @@ public class User {
    * @return 생성된 User 객체
    */
   //TODO: 쿠폰 연관관계 매핑 후 메서드 인자로 쿠폰 객체를 추가해야함.
-  public static User createAdminUserOf(String nickname, Integer cpPoint) {
+  public static User createAdminUserOf(String socialEmail, String nickname, Integer cpPoint) {
     return User.builder()
+        .socialEmail(socialEmail)
         .nickname(nickname)
         .cpPoint(cpPoint)
         .role(Role.ROLE_ADMIN)
