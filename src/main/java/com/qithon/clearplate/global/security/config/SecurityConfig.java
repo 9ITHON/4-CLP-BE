@@ -4,6 +4,8 @@ package com.qithon.clearplate.global.security.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qithon.clearplate.global.common.dto.response.ResponseDTO;
 import com.qithon.clearplate.global.exception.ErrorCode;
+import com.qithon.clearplate.global.oauth2.OAuth2LoginSuccessHandler;
+import com.qithon.clearplate.global.oauth2.OAuth2UserService;
 import com.qithon.clearplate.global.security.jwt.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -21,6 +25,9 @@ public class SecurityConfig {
 
   private final JwtTokenFilter jwtTokenFilter;
   private final ObjectMapper objectMapper;
+  private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+  private final OAuth2UserService oAuth2UserService;
+
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,9 +53,9 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(
-                "/**"
-            ).permitAll()
+            .requestMatchers("/oauth2/**", "/login/oauth2/code/**").permitAll()
+            .requestMatchers("/api/auth/**").permitAll()
+            .anyRequest().authenticated()
         )
         .exceptionHandling(e -> e
 
@@ -66,7 +73,12 @@ public class SecurityConfig {
               response.getWriter().write(invalidAuthorizationResponse);
             }))
 
-        .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+
+        .oauth2Login(oauth2 -> oauth2
+            .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
+            .successHandler(oAuth2LoginSuccessHandler)
+        );
     return http.build();
   }
 

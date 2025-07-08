@@ -40,6 +40,7 @@ public class User {
 
   @Builder
   private User(String socialEmail, String nickname, Integer cpPoint, Role role) {
+    this.socialEmail = socialEmail;
     this.nickname = nickname;
     this.cpPoint = cpPoint;
     this.role = role;
