@@ -1,10 +1,13 @@
 package com.qithon.clearplate.global.security.jwt;
 
+import com.qithon.clearplate.global.common.threadlocal.TraceIdHolder;
 import com.qithon.clearplate.global.security.core.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.SignatureException;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
