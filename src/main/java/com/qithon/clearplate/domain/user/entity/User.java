@@ -19,7 +19,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class User {
 
-  @Id @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
   private Long id;
 
   @Column(length = 10, nullable = false)
@@ -45,7 +46,7 @@ public class User {
    * 일반 사용자를 생성하는 메서드 입니다
    *
    * @param nickname 소셜로그인 후 반환되는 사용자 닉네임 입니다.
-   * @param cpPoint 서비스에서 사용되는 포인트 입니다
+   * @param cpPoint  서비스에서 사용되는 포인트 입니다
    * @return 생성된 User 객체
    */
   //TODO: 쿠폰 연관관계 매핑 후 메서드 인자로 쿠폰 객체를 추가해야함.
@@ -57,6 +58,15 @@ public class User {
         .build();
   }
 
+
+  /**
+   * 사장님 사용자를 생성하는 메서드 입니다
+   *
+   * @param nickname 소셜로그인 후 반환되는 사용자 닉네임 입니다.
+   * @param cpPoint  서비스에서 사용되는 포인트 입니다
+   * @return 생성된 User 객체
+   */
+  //TODO: 쿠폰 연관관계 매핑 후 메서드 인자로 쿠폰 객체를 추가해야함.
   public static User createOwnerUserOf(String nickname, Integer cpPoint) {
     return User.builder()
         .nickname(nickname)
@@ -66,13 +76,20 @@ public class User {
   }
 
 
+  /**
+   * 어드민 사용자를 생성하는 메서드 입니다
+   *
+   * @param nickname 소셜로그인 후 반환되는 사용자 닉네임 입니다.
+   * @param cpPoint  서비스에서 사용되는 포인트 입니다
+   * @return 생성된 User 객체
+   */
+  //TODO: 쿠폰 연관관계 매핑 후 메서드 인자로 쿠폰 객체를 추가해야함.
+  public static User createAdminUserOf(String nickname, Integer cpPoint) {
+    return User.builder()
+        .nickname(nickname)
+        .cpPoint(cpPoint)
+        .role(Role.ROLE_ADMIN)
+        .build();
 
-
-
-
-
-
-
-
-
+  }
 }
