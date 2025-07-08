@@ -2,6 +2,24 @@ spring:
   application:
     name: clearplate
 
+#kakao
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: f091ec6e688bf3ec2f91201c5f0e48eb
+            client-secret: Zg1P31sGBy9ycuUAvdnpDoTWU18Q9oSr
+            client-authentication-method: client_secret_post
+            redirect-uri: {baseUrl}/login/oauth2/code/{registrationId}
+            scope: profile_nickname
+            authorization-grant-type: authorization_code
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
   #mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,3 +35,14 @@ spring:
 springdoc:
   api-docs:
     version: OPENAPI_3_0
+
+# JWT (15 minute),(30 days)
+jwt:
+  accessTokenExpirationTime: 900000
+  refreshTokenExpirationTime: 2592000000
+  secretKey: d4339265d6b61754d17f65baa7ccd401522e6581d477d448931db28955e06a810cdebdec350e17ae8dc409913861c07009a5c444ae6c4c9a88a20f8845bc3710
+
+
+
+
+

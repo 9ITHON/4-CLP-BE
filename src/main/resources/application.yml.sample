@@ -2,6 +2,26 @@ spring:
   application:
     name: clearplate
 
+  #kakao
+    security:
+      oauth2:
+        client:
+          registration:
+            kakao:
+              client-id:
+              client-secret:
+              client-authentication-method: client_secret_post
+              redirect-uri: {baseUrl}/login/oauth2/code/{registrationId}
+              scope: profile_nickname
+              authorization-grant-type: authorization_code
+          provider:
+            kakao:
+              authorization-uri: https://kauth.kakao.com/oauth/authorize
+              token-uri:
+              user-info-uri:
+              user-name-attribute:
+
+
   #mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,3 +37,5 @@ spring:
 springdoc:
   api-docs:
     version: OPENAPI_3_0
+
+
