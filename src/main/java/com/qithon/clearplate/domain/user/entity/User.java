@@ -31,7 +31,7 @@ public class User {
   //TODO: 쿠폰 연관관계 매핑 필요
   //private Coupon coupon;
 
-  @Enumerated(EnumType.STRING) // admin, user
+  @Enumerated(EnumType.STRING) // admin, user, owner
   private Role role;
 
   @Builder
@@ -41,11 +41,27 @@ public class User {
     this.role = role;
   }
 
-  public static User of(String nickname, Integer cpPoint, Role role) {
+  /**
+   * 일반 사용자를 생성하는 메서드 입니다
+   *
+   * @param nickname 소셜로그인 후 반환되는 사용자 닉네임 입니다.
+   * @param cpPoint 서비스에서 사용되는 포인트 입니다
+   * @return 생성된 User 객체
+   */
+  //TODO: 쿠폰 연관관계 매핑 후 메서드 인자로 쿠폰 객체를 추가해야함.
+  public static User createStandardUserOf(String nickname, Integer cpPoint) {
     return User.builder()
         .nickname(nickname)
         .cpPoint(cpPoint)
-        .role(role)
+        .role(Role.ROLE_USER)
+        .build();
+  }
+
+  public static User createOwnerUserOf(String nickname, Integer cpPoint) {
+    return User.builder()
+        .nickname(nickname)
+        .cpPoint(cpPoint)
+        .role(Role.ROLE_OWNER)
         .build();
   }
 
