@@ -1,6 +1,10 @@
 package com.qithon.clearplate.global.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qithon.clearplate.global.common.dto.response.ResponseDTO;
+import com.qithon.clearplate.global.common.threadlocal.TraceIdHolder;
+import com.qithon.clearplate.global.exception.ErrorCode;
+import com.qithon.clearplate.global.security.core.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -79,13 +84,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
       filterChain.doFilter(request, response);
 
-    } catch (CustomUserNotFoundException e) {
+    } catch (UsernameNotFoundException e) {
       log.info(
           "[" + TraceIdHolder.get() + "]" + "(해당 사용자를 찾을 수 없습니다.)");
 
       // 유저가 존재하지 않을 경우 반환되는 json 응답.
       String userNotFoundExceptionResponse = objectMapper
-          .writeValueAsString(ResponseDto.response(
+          .writeValueAsString(ResponseDTO.response(
               ErrorCode.USER_NOT_FOUND.getHttpStatus(),
               ErrorCode.USER_NOT_FOUND.getMessage(),
               null));
