@@ -9,10 +9,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,9 +68,9 @@ public class UserController {
       )
   )
   @GetMapping
-  public ResponseEntity<?> getLoginUser(HttpSession httpSession) {
+  public ResponseEntity<?> getLoginUser(HttpServletRequest request) {
     try {
-      UserResponse userResponse = userService.getLoginUser(httpSession);
+      UserResponse userResponse = userService.getLoginUser(request);
       return ResponseEntity.ok().body(ResponseDTO.response(userResponse));
     } catch (RuntimeException e) {
       return ResponseEntity.badRequest().body(

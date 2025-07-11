@@ -30,9 +30,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication)
             throws IOException, ServletException {
 
-        // HttpSession 객체를 생성합니다.
-        HttpSession session = request.getSession();
-
 
         DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
 
@@ -41,14 +38,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String refreshToken = (String) attributes.get("refreshToken");
 
-        // 리프레시 토큰에서 사용자 ID를 추출하여 세션에 저장합니다.
-        session.setAttribute("userId", jwtTokenProvider.getUserIdFromToken(refreshToken));
-
-
         // 리프레시 토큰을 쿠키로 반환합니다.
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setDomain(".clearplate.store");
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setDomain("clearplate.store");
         refreshTokenCookie.setPath("/");
         response.addCookie(refreshTokenCookie);
 
