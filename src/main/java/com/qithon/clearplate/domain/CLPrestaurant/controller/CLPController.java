@@ -156,6 +156,71 @@ public class CLPController {
 
 
 
+
+  @ApiResponse(
+      responseCode = "200",
+      description = "### ✅ 조회에 성공했을 경우",
+      content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(
+              example = """
+                  {
+                    "timestamp": "2025-07-12 15:16:54",
+                    "data": {
+                      "id": 93,
+                      "addressName": "경기 성남시 분당구 삼평동 660",
+                      "clpCategory": {
+                        "category_group_code": "FD6",
+                        "category_group_name": "음식점",
+                        "category_name": "음식점 > 일식 > 돈까스,우동"
+                      },
+                      "distance": "",
+                      "restaurantId": "26797370",
+                      "phone": "",
+                      "placeName": "판교매일식당 판교본점",
+                      "placeUrl": "http://place.map.kakao.com/26797370",
+                      "roadAddressName": "경기 성남시 분당구 판교역로192번길 14-2",
+                      "x": "127.11210628616844",
+                      "y": "37.39738062184579",
+                      "imageUrl": null,
+                      "subtitle": "매일 먹어도 질리지 않는 든든한 한 끼"
+                    }
+                  }
+                """
+          )
+      )
+  )
+  @ApiResponse(
+      responseCode = "400",
+      description = "--- \n### ❌ 레스토랑 조회에 실패한 경우",
+      content = @Content(
+          mediaType = "application/json",
+          schema = @Schema(
+              example = """
+                  {
+                      "timestamp": "2025-07-12 15:17:27",
+                      "status": "BAD_REQUEST",
+                      "message": "레스토랑을 찾을 수 없습니다."
+                    }  
+                 """
+
+          )
+      )
+  )
+  @Operation(summary = "id 로 CLP 레스토랑을 조회합니다. ", description = "현재 등록된 CLP 레스토랑을 id 로 조회합니다")
+  @GetMapping("/{restaurantId}")
+  public ResponseEntity<?> getRestaurantById(@PathVariable String restaurantId) {
+    try {
+      CLPRestaurant response = clpService.getRestaurantById(restaurantId);
+      return ResponseEntity.ok(ResponseDTO.response(response));
+    } catch (RuntimeException e) {
+      return ResponseEntity.badRequest()
+          .body(ResponseDTO.response(HttpStatus.BAD_REQUEST, e.getMessage(), null));
+    }
+  }
+
+
+
   @ApiResponse(
       responseCode = "200",
       description = "### ✅ 레스토랑 조회에 성공한 경우",

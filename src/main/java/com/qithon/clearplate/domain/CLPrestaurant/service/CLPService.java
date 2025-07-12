@@ -31,6 +31,11 @@ public class CLPService {
         .toList();
   }
 
+  public CLPRestaurant getRestaurantById(String restauranId) {
+    return clpRepository.findByRestaurantId(restauranId)
+        .orElseThrow(() -> new RuntimeException("레스토랑을 찾을 수 없습니다."));
+  }
+
   public List<CLPRestaurant> getAllRestaurants() throws RuntimeException {
     List<CLPRestaurant> clpRestaurants = clpRepository.findAll();
 
